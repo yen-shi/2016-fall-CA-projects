@@ -1,4 +1,4 @@
-module MUX(
+module MUX (
   input [SIZE - 1:0] data1_i,
   input [SIZE - 1:0] data2_i,
   input select_i,
