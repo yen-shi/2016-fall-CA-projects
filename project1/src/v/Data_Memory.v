@@ -17,12 +17,6 @@ output  reg [31:0]  read_data_o;
 reg     [31:0]      memory  [0:255];
 integer i;
 
-initial begin
-  for(i = 0; i < 256; i++) begin
-    memory[i] = 32'b0;
-  end
-end
-
 always@(*) begin
   if(memWrite_i == 1) begin
     memory[addr_i] = write_data_i;
