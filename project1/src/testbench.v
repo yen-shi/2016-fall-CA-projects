@@ -4,6 +4,7 @@ module TestBench;
 
 reg                Clk;
 reg                Start;
+reg                Reset;
 integer            i, outfile, counter;
 integer            stall, flush;
 
@@ -11,10 +12,15 @@ always #(`CYCLE_TIME/2) Clk = ~Clk;
 
 CPU CPU(
     .clk_i  (Clk),
-    .start_i(Start)
+    .start_i(Start),
+    .rst_i  (Reset)
 );
   
 initial begin
+    // dumpfile for GTKwave
+    $dumpfile("CPU.vcd");
+    $dumpvars(0, TestBench);
+    
     counter = 0;
     stall = 0;
     flush = 0;
@@ -44,14 +50,14 @@ initial begin
     CPU.Data_Memory.memory[0] = 8'h5;       // n = 5 for example
     
     Clk = 1;
-    //Reset = 0;
     Start = 0;
     
-    #(`CYCLE_TIME/4) 
-    //Reset = 1;
-    Start = 1;
-        
+    #1
+    Reset = 1;
     
+    #(`CYCLE_TIME/4) 
+    Reset = 0;
+    Start = 1;
 end
   
 always@(posedge Clk) begin
@@ -59,12 +65,19 @@ always@(posedge Clk) begin
         $stop;
 
     // put in your own signal to count stall and flush
-    // if(CPU.HazzardDetection.mux8_o == 1 && CPU.Control.Jump_o == 0 && CPU.Control.Branch_o == 0)stall = stall + 1;
-    // if(CPU.HazzardDetection.Flush_o == 1)flush = flush + 1;  
+    if(CPU.bubble_o == 1 && CPU.Control.Jump_o == 0 && CPU.Control.Branch_o == 0) stall = stall + 1;
+    if(CPU.Flush == 1) flush = flush + 1;  
 
+    // print instructions
+    // $fdisplay(outfile, "instruction: %b ", CPU.instr_o);
+    // $fdisplay(outfile, "mux5_o: %b ", CPU.MEM_WB_mux5_o);
+    
     // print PC
     $fdisplay(outfile, "cycle = %d, Start = %d, Stall = %d, Flush = %d\nPC = %d", counter, Start, stall, flush, CPU.PC.pc_o);
     
+    // $fdisplay(outfile, "Reset = %d, PC_Write_o = %d", Reset, CPU.PC_Write_o);
+
+
     // print Registers
     $fdisplay(outfile, "Registers");
     $fdisplay(outfile, "R0(r0) = %d, R8 (t0) = %d, R16(s0) = %d, R24(t8) = %d", CPU.Registers.register[0], CPU.Registers.register[8] , CPU.Registers.register[16], CPU.Registers.register[24]);
@@ -90,7 +103,6 @@ always@(posedge Clk) begin
     
     counter = counter + 1;
     
-      
 end
 
   

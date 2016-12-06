@@ -7,7 +7,7 @@ module DFFs (
 
 parameter SIZE = 1;
 
-always@(posedge clk_i) begin
+always@(posedge clk_i or posedge rst_i) begin
   if(rst_i) begin
     read_o <= 0;
   end else begin
