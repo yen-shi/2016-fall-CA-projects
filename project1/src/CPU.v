@@ -28,6 +28,12 @@ input               start_i;
 
 wire        Flush;
 
+reg [1:0]  ForA, ForB;
+always@(*) begin
+  ForA = ForwardA_o;
+  ForB = ForwardB_o;
+end
+
 wire [31:0] instr_addr, new_pc, added_pc, instr_o;
 wire [31:0] mux1_o;
 wire [31:0] IF_ID_PC, IF_ID_IS;

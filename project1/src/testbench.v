@@ -64,7 +64,7 @@ end
 always@(posedge Clk) begin
     // if(counter == 30)    // stop after 30 cycles
     //     $stop;
-    if(counter == 100)
+    if(counter == 101)
         $stop;
 
     // put in your own signal to count stall and flush
@@ -77,7 +77,8 @@ always@(posedge Clk) begin
     
     // print PC
     $fdisplay(outfile, "cycle = %d, Start = %d, Stall = %d, Flush = %d\nPC = %d", counter, Start, stall, flush, CPU.PC.pc_o);
-    
+    $fdisplay(outfile, "Branch_o = %d, Equal = %d", CPU.Control.Branch_o, CPU.RS_RT_equal);
+    $fdisplay(outfile, "ForwardA = %d, ForwardB = %d", CPU.ForA, CPU.ForB);
     // $fdisplay(outfile, "Reset = %d, PC_Write_o = %d", Reset, CPU.PC_Write_o);
 
 
