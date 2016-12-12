@@ -47,8 +47,8 @@ initial begin
     outfile = $fopen("output.txt") | 1;
     
     // Set Input n into data memory at 0x00
-    // CPU.Data_Memory.memory[0] = 8'h5;       // n = 5 for example
-    CPU.Data_Memory.memory[0] = 8'ha;          // test n = 10
+    CPU.Data_Memory.memory[0] = 8'h5;       // n = 5 for example
+    // CPU.Data_Memory.memory[0] = 8'ha;          // test n = 10
     
     Clk = 1;
     Start = 0;
@@ -62,10 +62,10 @@ initial begin
 end
   
 always@(posedge Clk) begin
-    // if(counter == 30)    // stop after 30 cycles
-    //     $stop;
-    if(counter == 101)
+    if(counter == 70)    // stop after 30 cycles
         $stop;
+    // if(counter == 101)
+    //    $stop;
 
     // put in your own signal to count stall and flush
     if(CPU.bubble_o == 1 && CPU.Control.Jump_o == 0 && CPU.Control.Branch_o == 0) stall = stall + 1;
@@ -80,7 +80,6 @@ always@(posedge Clk) begin
     $fdisplay(outfile, "Branch_o = %d, Equal = %d", CPU.Control.Branch_o, CPU.RS_RT_equal);
     $fdisplay(outfile, "ForwardA = %d, ForwardB = %d", CPU.ForA, CPU.ForB);
     // $fdisplay(outfile, "Reset = %d, PC_Write_o = %d", Reset, CPU.PC_Write_o);
-
 
     // print Registers
     $fdisplay(outfile, "Registers");
