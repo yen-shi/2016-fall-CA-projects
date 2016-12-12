@@ -1,0 +1,9 @@
+PC = 36	addi $s3, $s2, 0
+PC = 28	sub $s0, $s0, $t1
+PC = 32	add $s1, $s1, $s2
+PC = 40	addi $s2, $s1, 0
+PC = 44	addi $s1, $s3, 0
+PC = 48	beq $s0, $t0, finish
+PC = 52 j loop
+PC = 60	and $t2, $s1, $r0
+PC = 56	sw $s1, 4($a0)
