@@ -1,5 +1,4 @@
-# 2016-fall-CA-project
-> CA project team work
+# 2016 Fall Computer Architecture Projects
 
 ## Project 1
 - MIPS ISA with pipeline stage, data forwarding, stall and flush.
